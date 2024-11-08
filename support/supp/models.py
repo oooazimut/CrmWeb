@@ -48,10 +48,20 @@ class Tasks(models.Model):
     status = models.TextField(verbose_name="Статус", blank=True, null=True)
     priority = models.TextField(verbose_name="Приоритет", blank=True, null=True)
     entity = models.ForeignKey(
-        Entities, models.DO_NOTHING, db_column="entity", verbose_name='Объект', blank=True, null=True
+        Entities,
+        models.DO_NOTHING,
+        db_column="entity",
+        verbose_name="Объект",
+        blank=True,
+        null=True,
     )
     slave = models.ForeignKey(
-        Employees, models.DO_NOTHING, db_column="slave", verbose_name='Исполнитель', blank=True, null=True
+        Employees,
+        models.DO_NOTHING,
+        db_column="slave",
+        verbose_name="Исполнитель",
+        blank=True,
+        null=True,
     )
     result = models.TextField(blank=True, null=True)
     resulttype = models.TextField(blank=True, null=True)
@@ -68,5 +78,57 @@ class Tasks(models.Model):
         db_table = "tasks"
         verbose_name = "Заявка"
         verbose_name_plural = "Заявки"
+
     def __str__(self):
-        return str(self.created)+'   '+str(self.slave)+': '+str(self.title)+', '+str(self.status)
+        return (
+            str(self.created)
+            + "   "
+            + str(self.slave)
+            + ": "
+            + str(self.title)
+            + ", "
+            + str(self.status)
+        )
+
+
+class Cars(models.Model):
+    id = models.AutoField(primary_key=True)
+    model = models.TextField(verbose_name="Марка и модель", blank=True, null=True)
+    state_number = models.TextField(verbose_name="Госномер", blank=True, null=True)
+
+    class Meta:
+        db_table = "cars"
+        verbose_name = "Автомобиль"
+        verbose_name_plural = "Автомобили"
+
+    def __str__(self):
+        return str(self.model) + ', ' + str(self.state_number)
+
+
+class CarsInUse(models.Model):
+    id = models.AutoField(primary_key=True)
+    dttm = models.DateTimeField(verbose_name="Время и дата", blank=True, null=True)
+    car = models.ForeignKey(
+        Cars,
+        models.DO_NOTHING,
+        db_column="car",
+        verbose_name="Автомобиль",
+        blank=True,
+        null=True,
+    )
+    user = models.ForeignKey(
+        "Employees",
+        models.DO_NOTHING,
+        db_column="user",
+        verbose_name="Исполнитель",
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        db_table = "cars_in_use"
+        verbose_name = "Закрепленный автомобиль"
+        verbose_name_plural = "Закрепленные автомобили"
+
+    def __str__(self):
+        return str(self.user) + ": " + str(self.car)
