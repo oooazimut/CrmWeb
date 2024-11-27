@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Cars, CarsInUse, Employees, Entities, Tasks
+from .models import Cars, CarsInUse, Employees, Entities, Tasks, Customers
 
 
 class TasksInline(admin.TabularInline):
@@ -65,3 +65,8 @@ class CarsAdmin(admin.ModelAdmin):
 @admin.register(CarsInUse)
 class CarsInUseAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Customers)
+class CustomersAdmin(admin.ModelAdmin):
+    search_fields = ("name", "object", "phone")

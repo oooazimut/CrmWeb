@@ -102,7 +102,7 @@ class Cars(models.Model):
         verbose_name_plural = "Автомобили"
 
     def __str__(self):
-        return str(self.model) + ', ' + str(self.state_number)
+        return str(self.model) + ", " + str(self.state_number)
 
 
 class CarsInUse(models.Model):
@@ -132,3 +132,21 @@ class CarsInUse(models.Model):
 
     def __str__(self):
         return str(self.user) + ": " + str(self.car)
+
+
+class Customers(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.TextField(blank=True, null=True)
+    phone = models.TextField(blank=True, null=True)
+    object = models.ForeignKey(
+        "Entities", models.DO_NOTHING, db_column="object", blank=True, null=True
+    )
+
+    class Meta:
+        managed = True
+        db_table = "customers"
+        verbose_name = "Клиент"
+        verbose_name_plural = "Клиенты"
+
+    def __str__(self):
+        return str(self.name) + ": " + str(self.object)
